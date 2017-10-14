@@ -27,14 +27,14 @@
     <script src="three.js-master/examples/js/libs/stats.min.js"></script>
 
 		<script>
+      if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
+
 			var container;
 			var camera, scene, renderer;
 			var plane;
 			var mouse, raycaster, isShiftDown = false;
-
       var stats;
       var controls;
-      var cross;
 
 			var cubeGeometry = new THREE.BoxGeometry( 50, 50, 50 );
 			var cubeMaterial = new THREE.MeshLambertMaterial( { color: 0x00ff80, overdraw: 0.5 } );
@@ -46,22 +46,13 @@
 			render();
 
 			function init() {
-				container = document.createElement( 'div' );
-				document.body.appendChild( container );
-				var info = document.createElement( 'div' );
-				info.style.position = 'absolute';
-				info.style.top = '10px';
-				info.style.width = '100%';
-				info.style.textAlign = 'center';
-				info.innerHTML = '<a href="http://threejs.org" target="_blank" rel="noopener">three.js</a> - voxel painter<br><strong>click</strong>: add voxel, <strong>shift + click</strong>: remove voxel, <a href="javascript:save()">save .png</a>';
-				container.appendChild( info );
 
-        //camera
+        // camera
         camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
 				camera.position.set( 500, 800, 1300 );
 				camera.lookAt( new THREE.Vector3() );
 
-        //camera control
+        // camera control
         controls = new THREE.TrackballControls( camera );
         controls.rotateSpeed = 1.0;
         controls.zoomSpeed = 1.2;
@@ -81,7 +72,7 @@
 				var gridHelper = new THREE.GridHelper( 1000, 20 ); //Create grid helper on the canvas. The first parameter represents n*n plane; the second represnts the size of every grid
 				scene.add( gridHelper ); //add the grid helper to the scene
 
-        //
+        // create a plane, which is a foundation for drawing cubes
 				raycaster = new THREE.Raycaster();
 				mouse = new THREE.Vector2();
 				var geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
@@ -89,7 +80,7 @@
 				plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { visible: false } ) );
 				scene.add( plane );
 				objects.push( plane );
-				var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
+				// var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
 
         // Lights
 				var ambientLight = new THREE.AmbientLight( 0x606060 );
@@ -107,13 +98,18 @@
 				directionalLight.position.normalize();
 				scene.add( directionalLight );
 
-        //renderer
+        // renderer
 				renderer = new THREE.WebGLRenderer( { antialias: false } );
 				renderer.setPixelRatio( window.devicePixelRatio );
 				renderer.setSize( window.innerWidth, window.innerHeight );
+        container = document.getElementById( 'container' );
 				container.appendChild(renderer.domElement);
 
-        //eventlistener
+        // add a FPS monitor on the top left
+        stats = new Stats();
+        container.appendChild( stats.dom );
+
+        // eventlistener
 				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 				document.addEventListener( 'keydown', onDocumentKeyDown, false );
 				document.addEventListener( 'keyup', onDocumentKeyUp, false );
@@ -129,6 +125,7 @@
 				render();
 			}
 
+      //camera rotation animation
       function animate() {
         requestAnimationFrame( animate );
         controls.update();
@@ -171,13 +168,9 @@
 				}
 			}
 
-			function save() {
-				window.open( renderer.domElement.toDataURL('image/png'), 'mywindow' );
-				return false;
-			}
-
 			function render() {
 				renderer.render( scene, camera );
+        stats.update();
 			}
 		</script>
 
