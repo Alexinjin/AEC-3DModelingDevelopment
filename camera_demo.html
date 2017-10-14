@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>three.js webgl - trackball controls</title>
+		<title>three.js webgl - camera demo</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
@@ -44,12 +44,19 @@
 			var camera, controls, scene, renderer;
 			var cross;
 
+			var geometry = new THREE.BoxGeometry( 100, 100, 100 );
+			var material = new THREE.MeshPhongMaterial( { color: 0xffffff} );
+
 			init();
 			animate();
 
 			function init() {
+
+				//camera
 				camera = new THREE.PerspectiveCamera( 60, window.innerWidth / window.innerHeight, 1, 1000 );
 				camera.position.z = 500;
+
+				//camera control
 				controls = new THREE.TrackballControls( camera );
 				controls.rotateSpeed = 1.0;
 				controls.zoomSpeed = 1.2;
@@ -66,9 +73,7 @@
 				scene.background = new THREE.Color( 0xcccccc );
 				// scene.fog = new THREE.FogExp2( 0xcccccc, 0.002 );
 
-				var geometry = new THREE.BoxGeometry( 100, 100, 100 );
-				var material = new THREE.MeshPhongMaterial( { color: 0xffffff} );
-
+				//create an cube object
 				var mesh = new THREE.Mesh( geometry, material );
 				mesh.position.x = 0;
 				mesh.position.y = 0;
