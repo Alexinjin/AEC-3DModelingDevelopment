@@ -23,6 +23,7 @@
 
     <script src="three.js-master/examples/js/controls/TrackballControls.js"></script>
     <script src="three.js-master/examples/js/controls/OrbitControls.js"></script>
+		<script src="three.js-master/examples/js/controls/DragControls.js"></script>
 
     <script src="three.js-master/examples/js/Detector.js"></script>
     <script src="three.js-master/examples/js/libs/stats.min.js"></script>
@@ -50,7 +51,7 @@
 
         // camera
         camera = new THREE.PerspectiveCamera( 40, window.innerWidth / window.innerHeight, 1, 10000 );
-				camera.position.set( 500, 800, 1300 );
+				camera.position.set( 0, 800, 0 );
 				camera.lookAt( new THREE.Vector3() );
 
         // camera control
@@ -59,7 +60,7 @@
         controls.zoomSpeed = 1.2;
         controls.panSpeed = 0.8;
         controls.noZoom = false;
-        controls.noPan = false;
+        controls.noPan = true;
         controls.staticMoving = true;
         controls.dynamicDampingFactor = 0.3;
         controls.keys = [ 65, 83, 68 ];
@@ -80,7 +81,7 @@
 				mouse = new THREE.Vector2();
 				var geometry = new THREE.PlaneBufferGeometry( 1000, 1000 );
 				geometry.rotateX( - Math.PI / 2 );
-				plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { visible: false } ) );
+				plane = new THREE.Mesh( geometry, new THREE.MeshBasicMaterial( { visible: true } ) );
 				scene.add( plane );
 				objects.push( plane );
 				// var material = new THREE.MeshBasicMaterial( { color: 0xff0000, wireframe: true } );
@@ -108,15 +109,22 @@
         container = document.getElementById( 'container' );
 				container.appendChild(renderer.domElement);
 
+
+				// var dragControls = new THREE.DragControls( objects, camera, renderer.domElement );
+				// dragControls.addEventListener( 'dragstart', function ( event ) { controls.enabled = false; } );
+				// dragControls.addEventListener( 'dragend', function ( event ) { controls.enabled = true; } );
+
         // add a FPS monitor on the top left
         stats = new Stats();
         container.appendChild( stats.dom );
 
         // eventlistener
 				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
+				document.addEventListener( 'keypress', onDocumentKeyPress, false );
 				document.addEventListener( 'keydown', onDocumentKeyDown, false );
 				document.addEventListener( 'keyup', onDocumentKeyUp, false );
 				window.addEventListener( 'resize', onWindowResize, false );
+
 			}
 
       //Resize the size of the browser
@@ -158,15 +166,39 @@
 				}
 			}
 
+			function onDocumentKeyPress( event ) {
+				// console.log("hello");
+        // var keyCode = event.which;
+        // var positionDelta = 70;
+        // //console.log(keyCode);
+        // //A
+        // if ( keyCode == 97 ){
+        //     camera.translateZ( - positionDelta );
+        // }
+        // //D
+        // else if ( keyCode == 100 )
+				// {
+        //     camera.translateZ( + positionDelta );
+        // }
+        // //W
+        // else if ( keyCode == 119 ){
+        //     camera.translateX( - positionDelta );
+        // }
+        // //S
+        // else if ( keyCode == 115 ){
+        //     camera.translateX( + positionDelta );
+        // }
+	    }
+
 			function onDocumentKeyDown( event ) {
-				switch( event.keyCode ) {
-					case 16: isShiftDown = true; break;
+				if( event.shiftKey == true) {
+					isShiftDown = true;
 				}
 			}
 
 			function onDocumentKeyUp( event ) {
-				switch( event.keyCode ) {
-					case 16: isShiftDown = false; break;
+				if( event.shiftKey == false) {
+					isShiftDown = false;
 				}
 			}
 
