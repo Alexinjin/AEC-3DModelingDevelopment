@@ -1,7 +1,7 @@
 <!DOCTYPE html>
 <html lang="en">
 	<head>
-		<title>three.js webgl - plane demo</title>
+		<title>three.js webgl - demo</title>
 		<meta charset="utf-8">
 		<meta name="viewport" content="width=device-width, user-scalable=no, minimum-scale=1.0, maximum-scale=1.0">
 		<style>
@@ -27,6 +27,10 @@
 
     <script src="three.js-master/examples/js/Detector.js"></script>
     <script src="three.js-master/examples/js/libs/stats.min.js"></script>
+
+		<script src="three.js-master/src/loaders/ObjectLoader.js"></script>
+		<script src="three.js-master/src/loaders/JSONLoader.js"></script>
+		<script src="three.js-master/examples/js/loaders/OBJLoader.js"></script>
 
 		<script>
       if ( ! Detector.webgl ) Detector.addGetWebGLMessage();
@@ -118,6 +122,7 @@
         stats = new Stats();
         container.appendChild( stats.dom );
 
+
         // eventlistener
 				document.addEventListener( 'mousedown', onDocumentMouseDown, false );
 				document.addEventListener( 'keypress', onDocumentKeyPress, false );
@@ -141,6 +146,49 @@
         requestAnimationFrame( animate );
         controls.update();
       }
+
+			//import a JSON file to the scene
+			function loadScene(){
+				var loader = new THREE.ObjectLoader();
+				loader.load(
+					"test.json",
+					function ( object ) {
+						console.log(object);
+						scene.add(object)
+					},
+					function ( xhr ) {
+						console.log( (xhr.loaded / xhr.total * 100) + '% loaded' );
+					},
+					function ( xhr ) {
+						console.error( 'An error happened' );
+					}
+				);
+			}
+
+			//export the scene as a JSON file
+			var link = document.createElement( 'a' );
+			link.style.display = 'none';
+			document.body.appendChild( link );
+
+			var NUMBER_PRECISION = 6;
+			function parseNumber( key, value ) {
+				return typeof value === 'number' ? parseFloat( value.toFixed( NUMBER_PRECISION ) ) : value;
+			}
+
+			function exportScene(save, type) {
+				var json = scene.toJSON();
+				json = JSON.stringify(json, parseNumber, '\t' );
+				json = json.replace( /[\n\t]+([\d\.e\-\[\]]+)/g, '$1' );
+				console.log(scene.toJSON());
+				const blob = new Blob( [ json ], { type: 'text/plain' } );
+				const objectURL = URL.createObjectURL(blob);
+
+				link.href = objectURL;
+				link.href = URL.createObjectURL(blob);
+				link.download = 'test.json';
+				link.click();
+			}
+			//
 
 			function onDocumentMouseDown( event ) {
 				event.preventDefault();
@@ -167,27 +215,12 @@
 			}
 
 			function onDocumentKeyPress( event ) {
-				// console.log("hello");
-        // var keyCode = event.which;
-        // var positionDelta = 70;
-        // //console.log(keyCode);
-        // //A
-        // if ( keyCode == 97 ){
-        //     camera.translateZ( - positionDelta );
-        // }
-        // //D
-        // else if ( keyCode == 100 )
-				// {
-        //     camera.translateZ( + positionDelta );
-        // }
-        // //W
-        // else if ( keyCode == 119 ){
-        //     camera.translateX( - positionDelta );
-        // }
-        // //S
-        // else if ( keyCode == 115 ){
-        //     camera.translateX( + positionDelta );
-        // }
+				if(event.keyCode == 115){
+					loadScene();
+				}
+      	else if(event.keyCode == 97){
+					exportScene();
+				}
 	    }
 
 			function onDocumentKeyDown( event ) {

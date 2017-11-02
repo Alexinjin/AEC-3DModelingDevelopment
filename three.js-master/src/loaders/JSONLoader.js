@@ -1,4 +1,4 @@
-import { Loader } from './Loader';
+
 import { AnimationClip } from '../animation/AnimationClip';
 import { Vector3 } from '../math/Vector3';
 import { Vector4 } from '../math/Vector4';
@@ -8,7 +8,7 @@ import { Face3 } from '../core/Face3';
 import { Geometry } from '../core/Geometry';
 import { FileLoader } from './FileLoader';
 import { DefaultLoadingManager } from './LoadingManager';
-
+import { Loader } from './Loader';
 /**
  * @author mrdoob / http://mrdoob.com/
  * @author alteredq / http://alteredqualia.com/
