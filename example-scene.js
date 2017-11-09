@@ -1,16 +1,8 @@
-var scene, root, renderer, camera, controls;
-
-var params = {
-	month: 11,
-	day: 1,
-	hour: 8,
-	minute: 0
-};
-
+var scene, root, renderer, camera, controls, exactdatetime, sunlight;
+var canvas = document.getElementById("canvas");
 init();
 createScene();
 animate();
-
 
 function init () {
 	scene = new THREE.Scene();
@@ -20,7 +12,7 @@ function init () {
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.shadowMap.enabled = true;
-	document.body.appendChild( renderer.domElement );
+	canvas.appendChild( renderer.domElement );
 
 	camera = new THREE.PerspectiveCamera(
 		75,
@@ -30,14 +22,8 @@ function init () {
 	);
 
 	camera.position.z = 50.0;
-	controls = new THREE.OrbitControls( camera );
+	controls = new THREE.OrbitControls(camera, document.getElementById("canvas"));
 	controls.addEventListener( "change", render );
-
-	var gui = new dat.GUI();
-	gui.add( params, 'month', 1, 12).step(1).name( 'Month' ).onChange();
-	gui.add( params, 'day', 1, 31 ).step( 1 ).name( 'Day' ).onChange();
-	gui.add( params, 'hour', 0, 23).step(1).name( 'Hour' ).onChange();
-	gui.add( params, 'minute', 0, 59).step(1).name( 'Minute' ).onChange();
 }
 
 function animate () {
@@ -78,11 +64,12 @@ function createScene () {
 		new THREE.Vector2( 33.65, -117.83 ),
 		new THREE.Vector3( 0.0, 0.0, 1.0 ),
 		new THREE.Vector3( -1.0, 0.0, 0.0 ),
-		new THREE.Vector3( 0.0, -1.0, 0.0 )
+		new THREE.Vector3( 0.0, -1.0, 0.0 ),
 	);
 	root.add( sunLight );
 
-	sunLight.updateOrientation(true);
+	sunlight = 6;
+	sunLight.updateOrientation(true, new Date(2015, 11, 01, 8, 0));
 	sunLight.updateDirectionalLight();
 
 	// Adjust the directional light's shadow camera dimensions
@@ -99,4 +86,15 @@ function createBox ( width_, height_, depth_, color_ = 0xffffff ) {
 	cube.castShadow = true;
 	cube.receiveShadow = true;
 	return cube;
+}
+
+function gettime(datetime){
+	var datetime = datetime.split("T");
+	var date = datetime[0].split("-");
+	var time = datetime[1].split(":");
+  exactdatetime = new Date(date[0], date[1]-1, date[2], time[0], time[1]);
+	root.getObjectByName("sunlight").updateOrientation(true, exactdatetime);
+	root.getObjectByName("sunlight").updateDirectionalLight();
+	// console.log(sunlight);
+	// console.log(root.getObjectByName("sunlight"));
 }

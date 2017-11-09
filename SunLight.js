@@ -3,10 +3,11 @@ SunLight = function (
 		north_,
 		east_,
 		nadir_,
-		sun_distance_ = 100.0
+		sun_distance_ = 100.0,
 	) {
 	THREE.Object3D.call( this );
 	this.type = "SunLight";
+	this.name = "sunlight";
 
 	// Latitude and longtitude of the current location on the world
 	// Measured as decimal degrees. North and east is positive
@@ -36,7 +37,7 @@ SunLight = function (
 	this.elevation = 0.0;
 
 	// Local date and time
-	this.localDate = new Date("November 1, 2015 8:00:00");
+	this.localDate = new Date();
 
 	// The directional light in Three.js is managed by a directional vector.
 	// To make life easier, I'm adding the light as a child to this hinge object
@@ -69,10 +70,10 @@ SunLight.prototype = Object.assign(
 	} );
 
 // Updates the orientation of the sun using the coordinates and the localDate
-SunLight.prototype.updateOrientation = function ( update_date_ = true ) {
+SunLight.prototype.updateOrientation = function ( update_date_ = true, datetime ) {
 	// Update the local date if the parameter is true (true by default).
 	if ( update_date_ ) {
-		this.localDate = new Date("November 1, 2015 8:00:00");
+		this.localDate = datetime;
 		console.log(this.localDate);
 	}
 

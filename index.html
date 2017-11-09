@@ -6,18 +6,36 @@
 			body { margin: 0; }
 			canvas { width: 100%; height: 100% }
 		</style>
+		<!-- <script type="text/javascript">
+			function test(val){console.log(val);}
+		</script> -->
 		<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0-beta.2/css/bootstrap.min.css" integrity="sha384-PsH8R72JQ3SOdhVi3uxftmaW6Vc51MKb0q5P2rRUpPvrszuE4W1povHYgTpBfshb" crossorigin="anonymous">
 	</head>
 	<body>
-		<script src="./lib/three.js"></script>
-		<script src="./lib/OrbitControls.js"></script>
-		<script src="./lib/dat.gui.min.js"></script>
-		<script src="SunLight.js"></script>
-		<script src="example-scene.js"></script>
-		<div class="container">
+		<div class="container" style="margin:0;">
 		  <div class="row">
-		    <div class="col-lg-4">hello</div>
-		    <div class="col-lg-8">world</div>
+		    <div class="col-xl-4" id="panel">
+
+					<form id="frm1" action="/action_page.php">
+						<div class="form-group row">
+  						<label for="example-datetime-local-input" class="col-2 col-form-label">Datetime</label>
+  						<div class="col-10">
+    						<input class="form-control" type="datetime-local" value="2015-11-01T08:00:00" name="datetime" id="example-datetime-local-input">
+  						</div>
+						</div>
+					  <input type="button" onclick="gettime(document.getElementById('example-datetime-local-input').value)" value="Submit">
+					</form>
+
+
+				</div>
+		    <div class="col-xl-8" id="canvas">
+					<script src="./lib/three.js"></script>
+					<script src="./lib/OrbitControls.js"></script>
+					<script src="./lib/TrackballControls.js"></script>
+					<script src="./lib/dat.gui.min.js"></script>
+					<script src="SunLight.js"></script>
+					<script src="example-scene.js"></script>
+				</div>
 		  </div>
 
 	</body>
