@@ -1,25 +1,43 @@
 var scene, root, renderer, camera, controls;
+
+var params = {
+	month: 11,
+	day: 1,
+	hour: 8,
+	minute: 0
+};
+
 init();
 createScene();
 animate();
+
 
 function init () {
 	scene = new THREE.Scene();
 	root = new THREE.Object3D();
 	scene.add( root );
+
 	renderer = new THREE.WebGLRenderer();
 	renderer.setSize( window.innerWidth, window.innerHeight );
 	renderer.shadowMap.enabled = true;
 	document.body.appendChild( renderer.domElement );
+
 	camera = new THREE.PerspectiveCamera(
 		75,
 		window.innerWidth / window.innerHeight,
 		0.1,
 		1000.0
 	);
+
 	camera.position.z = 50.0;
 	controls = new THREE.OrbitControls( camera );
 	controls.addEventListener( "change", render );
+
+	var gui = new dat.GUI();
+	gui.add( params, 'month', 1, 12).step(1).name( 'Month' ).onChange();
+	gui.add( params, 'day', 1, 31 ).step( 1 ).name( 'Day' ).onChange();
+	gui.add( params, 'hour', 0, 23).step(1).name( 'Hour' ).onChange();
+	gui.add( params, 'minute', 0, 59).step(1).name( 'Minute' ).onChange();
 }
 
 function animate () {
