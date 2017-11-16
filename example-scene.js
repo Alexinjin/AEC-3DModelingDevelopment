@@ -6,7 +6,7 @@ animate();
 
 function init () {
 	scene = new THREE.Scene();
-	scene.fog = new THREE.FogExp2( 0xefd1b5, 0.05 );
+	scene.fog = new THREE.FogExp2( 0xaaacaf, 0.04 );
 	root = new THREE.Object3D();
 	scene.add( root );
 
